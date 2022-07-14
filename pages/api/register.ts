@@ -1,8 +1,9 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
 import type { RespostaPadraoMsg } from '../../types/RespostaPadraoMsg';
 import type { RegisterRequest } from '../../types/RegisterRequest';
+import {UserModel} from '../../models/UserModel';
 
-const endpointRegister = (req: NextApiRequest, res: NextApiResponse<RespostaPadraoMsg>) => {
+const endpointRegister = async (req: NextApiRequest, res: NextApiResponse<RespostaPadraoMsg>) => {
 
    if (req.method === 'POST'){
         const usuario = req.body as RegisterRequest;
@@ -21,11 +22,13 @@ const endpointRegister = (req: NextApiRequest, res: NextApiResponse<RespostaPadr
         }
 
         //salvar no banco de dados
-
+        await UserModel.create(usuario);
         return res.status(200).json({msg: 'Usuário cadastrado com sucesso!'})
    }
-   return res.status(405).json({error: 'Método informado não é válido.'}) 
 
+   return res.status(405).json({error: 'Método informado não é válido.'})
+
+ 
 }
 
 export default endpointRegister;
