@@ -2,6 +2,8 @@ import type {NextApiRequest, NextApiResponse} from 'next';
 import type { RespostaPadraoMsg } from '../../types/RespostaPadraoMsg';
 import type { RegisterRequest } from '../../types/RegisterRequest';
 import {UserModel} from '../../models/UserModel';
+import {conectaMongoDB} from '../../middlewares/conectaMongoDB';
+import md5 from 'md5';
 
 const endpointRegister = async (req: NextApiRequest, res: NextApiResponse<RespostaPadraoMsg>) => {
 
@@ -22,7 +24,12 @@ const endpointRegister = async (req: NextApiRequest, res: NextApiResponse<Respos
         }
 
         //salvar no banco de dados
-        await UserModel.create(usuario);
+        const userToBeSaved = {
+            nome: usuario.nome,
+            email: usuario.email,
+            senha: md5(usuario.senha)
+        }
+        await UserModel.create(userToBeSaved);
         return res.status(200).json({msg: 'Usuário cadastrado com sucesso!'})
    }
 
@@ -31,4 +38,4 @@ const endpointRegister = async (req: NextApiRequest, res: NextApiResponse<Respos
  
 }
 
-export default endpointRegister;
+export default conectaMongoDB(endpointRegister);
