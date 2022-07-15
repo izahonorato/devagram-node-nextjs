@@ -23,6 +23,12 @@ const endpointRegister = async (req: NextApiRequest, res: NextApiResponse<Respos
             return res.status(400).json({error: 'Senha inválida'})
         }
 
+        //verificação se já existe usuário com o mesmo email
+        const usuariosMesmoEmail = await UserModel.find({email: usuario.email})
+        if(usuariosMesmoEmail && usuariosMesmoEmail.length > 0){
+            return res.status(400).json({error: 'Já existe uma conta com este e-mail.'})
+        }
+
         //salvar no banco de dados
         const userToBeSaved = {
             nome: usuario.nome,
