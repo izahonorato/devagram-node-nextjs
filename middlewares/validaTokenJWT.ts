@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiHandler, NextApiResponse } from 'next';
 import type { RespostaPadraoMsg } from '../types/RespostaPadraoMsg';
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
+
 export const validaTokenJWT = (handler: NextApiHandler) => 
      (req: NextApiRequest, res: NextApiResponse) => {
 
@@ -38,7 +39,7 @@ export const validaTokenJWT = (handler: NextApiHandler) =>
     
                 req.query.userId = decoded._id
             }
-        }catch(e: Error){
+        }catch(e: any){
             console.log(e)
         }    
            
