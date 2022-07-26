@@ -6,7 +6,7 @@ const PublicacaoSchema = new Schema({
     foto: {type: String, required: true},
     data: {type: Date, required: true},
     comentarios: {type: Array, required: true, default: []},
-    curtidas: {type: Array, required: true, deafult: []}
+    curtidas: {type: Array, required: true, default: []}
 
 })
 
