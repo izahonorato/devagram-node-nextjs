@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 
 
 export const validaTokenJWT = (handler: NextApiHandler) => 
-     (req: NextApiRequest, res: NextApiResponse) => {
+     (req: NextApiRequest, res: NextApiResponse<RespostaPadraoMsg | any[] >) => {
 
         try{
             const { MINHA_CHAVE_JWT } = process.env
