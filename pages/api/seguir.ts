@@ -28,6 +28,14 @@ const endpointSeguir = async (req: NextApiRequest, res: NextApiResponse<Resposta
 
             if(euJaSigoEsseUsuario && euJaSigoEsseUsuario.length > 0){
                 //eu já sigo o usuário
+                euJaSigoEsseUsuario.forEach(async(e: any) => await SeguidorModel.findByIdAndDelete({_id: e.id}))
+                usuarioLogado.seguindo--
+                await UserModel.findByIdAndUpdate({_id: usuarioLogado._id}, usuarioLogado)
+
+                usuarioASerSeguido.seguidores--
+                await UserModel.findByIdAndUpdate({_id: usuarioASerSeguido._id}, usuarioASerSeguido)
+
+                return res.status(200).json({msg: 'Deixou de seguir com sucesso.'})
             }else{
                 //eu não sigo o usuário
                 const seguidor ={
@@ -43,7 +51,7 @@ const endpointSeguir = async (req: NextApiRequest, res: NextApiResponse<Resposta
                 usuarioASerSeguido.seguidores++
                 await UserModel.findByIdAndUpdate({_id: usuarioASerSeguido._id}, usuarioASerSeguido)
 
-                return res.status(200).json({error: 'Usuário seguido com sucesso.'})
+                return res.status(200).json({msg: 'Usuário seguido com sucesso.'})
             }
 
         }
