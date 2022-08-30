@@ -35,7 +35,12 @@ const feedEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPa
 
                 const seguidores = await SeguidorModel.find({usuarioId: usuarioLogado})
                 const publicacoes = await PublicacaoModel.find({
-                    idUsuario : usuarioLogado._id,
+                    $or : [
+                        {idUsuario : usuarioLogado._id},
+                        {idUsuario : seguidores}
+                    ]
+
+                    
                 })
             }
 
