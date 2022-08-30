@@ -42,6 +42,10 @@ const handler = nc()
                 data: new Date()
             }
 
+            //somando número de publicações do usuário
+            usuario.publicacoes++
+            await UserModel.findByIdAndUpdate({_id: usuario._id}, usuario)
+
             await PublicacaoModel.create(publicacao)
 
             return res.status(200).json({ error: 'Publicação ok.' })
