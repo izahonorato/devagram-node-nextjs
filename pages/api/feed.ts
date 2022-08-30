@@ -4,6 +4,7 @@ import { conectaMongoDB } from '../../middlewares/conectaMongoDB'
 import { RespostaPadraoMsg } from '../../types/RespostaPadraoMsg'
 import { UserModel } from '../../models/UserModel'
 import { PublicacaoModel } from '../../models/PublicacaoModel'
+import { SeguidorModel } from '../../models/SeguidorModel'
 
 const feedEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPadraoMsg | any>) => {
     try{
@@ -21,6 +22,21 @@ const feedEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPa
                     .find({idUsuario: usuario._id}) //busca todas as publicacoes desse ID
                     .sort({data: -1}) //ordena por data, mais recente para mais antigo
                     return res.status(200).json(publicacoes)
+            }else{
+                //se a busca não é por ID de usuário então trazemos o feed principal
+                const {userId} = req.query;
+                const usuarioLogado = await UserModel.findById(userId)
+
+                if(!usuarioLogado){
+                    return res.status(400).json({error: 'Usuário não encontrado.'})
+                }
+                //agora temos o usuário logado
+                //vamos buscar os seguidores
+
+                const seguidores = await SeguidorModel.find({usuarioId: usuarioLogado})
+                const publicacoes = await PublicacaoModel.find({
+                    idUsuario : usuarioLogado._id,
+                })
             }
 
 
