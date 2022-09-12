@@ -34,14 +34,16 @@ const feedEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPa
                 //vamos buscar os seguidores
 
                 const seguidores = await SeguidorModel.find({usuarioId: usuarioLogado})
+                const seguidoresIds = seguidores.map(s => s.usuarioSeguidoId)
                 const publicacoes = await PublicacaoModel.find({
                     $or : [
                         {idUsuario : usuarioLogado._id},
                         {idUsuario : seguidores}
-                    ]
+                    ]     
+                //ordenando as publicacoes por data    
+                }).sort({data: -1}) //publicacoes mais novas aparecem primeiro
 
-                    
-                })
+                return res.status(200).json({publicacoes})
             }
 
 
