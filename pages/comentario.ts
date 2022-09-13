@@ -15,7 +15,7 @@ const comentarioEndpoint = async (req: NextApiRequest, res: NextApiResponse<Resp
             if(!usuarioLogado){
                 return res.status(400).json({error:'Usuário não encontrado'})
             }
-            //id da publicacao - vem do query
+            //id da publicacao - vem da query
             const publicacao = await PublicacaoModel.findById(id)
             if(!publicacao){
                 return res.status(400).json({error: 'Publicação não encontrada'})
