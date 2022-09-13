@@ -33,17 +33,30 @@ const feedEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPa
                 //agora temos o usuário logado
                 //vamos buscar os seguidores
 
-                const seguidores = await SeguidorModel.find({usuarioId: usuarioLogado})
+                const seguidores = await SeguidorModel.find({usuarioId: usuarioLogado._id})
                 const seguidoresIds = seguidores.map(s => s.usuarioSeguidoId)
                 const publicacoes = await PublicacaoModel.find({
                     $or : [
                         {idUsuario : usuarioLogado._id},
-                        {idUsuario : seguidores}
+                        {idUsuario : seguidoresIds}
                     ]     
                 //ordenando as publicacoes por data    
                 }).sort({data: -1}) //publicacoes mais novas aparecem primeiro
 
-                return res.status(200).json({publicacoes})
+                const result = []
+                for (const publicacao of publicacoes){
+                    const usuarioDaPublicacao = await UserModel.findById(publicacao.idUsuario)
+
+                    if(usuarioDaPublicacao){
+                        const final = {...publicacao._doc, usuario : {
+                            nome: usuarioDaPublicacao.nome,
+                            avatar: usuarioDaPublicacao.avatar
+                        }}
+                        result.push(final)
+                    }
+                }
+
+                return res.status(200).json({result})
             }
 
 
