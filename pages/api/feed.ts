@@ -47,6 +47,7 @@ const feedEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPa
                 for (const publicacao of publicacoes){
                     const usuarioDaPublicacao = await UserModel.findById(publicacao.idUsuario)
 
+                    //aqui estou juntando o json da publicacao com o json de dados do usuario
                     if(usuarioDaPublicacao){
                         const final = {...publicacao._doc, usuario : {
                             nome: usuarioDaPublicacao.nome,
