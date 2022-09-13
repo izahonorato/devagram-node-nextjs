@@ -1,9 +1,9 @@
 import type {NextApiRequest, NextApiResponse} from 'next';
-import { conectaMongoDB } from '../middlewares/conectaMongoDB';
-import { validaTokenJWT } from '../middlewares/validaTokenJWT';
-import { PublicacaoModel } from '../models/PublicacaoModel';
-import { UserModel } from '../models/UserModel';
-import type { RespostaPadraoMsg } from '../types/RespostaPadraoMsg';
+import { conectaMongoDB } from '../../middlewares/conectaMongoDB';
+import { validaTokenJWT } from '../../middlewares/validaTokenJWT';
+import { PublicacaoModel } from '../../models/PublicacaoModel';
+import { UserModel } from '../../models/UserModel';
+import type { RespostaPadraoMsg } from '../../types/RespostaPadraoMsg';
 
 const comentarioEndpoint = async (req: NextApiRequest, res: NextApiResponse<RespostaPadraoMsg>) => {
     try{
